@@ -6,7 +6,8 @@
 <p align="center"> sumo fans ! </p>
 </b>
 
-<p align="center"><img src="https://c.tenor.com/7fz6VTVZTfQAAAAC/tenor.gif" width="30%" height="30%"></p>
+
+<p align="center"><img src="https://c.tenor.com/7fz6VTVZTfQAAAAC/tenor.gif" width="25%" height="25%"></p>
 
 
 - - - - - - - - - - -
