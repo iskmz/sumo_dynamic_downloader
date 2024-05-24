@@ -10,7 +10,7 @@ SET /A _day1=%day%
 SET /A _day14=%_day1%+13
 SET /A _day15=%_day1%+14
 echo.
-Set /p rikishi="> Enter number or rikishi intro. videos: "
+Set /p rikishi="> Enter number of rikishi intro. videos: "
 Set /A _rikishi=%rikishi%
 
 echo 00__PREVIEW>> "zzz_toDownload.txt"
