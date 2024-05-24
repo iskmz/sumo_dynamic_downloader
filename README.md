@@ -61,5 +61,5 @@ possible future improvements:
 
 
 
-<p align="center"><img src="https://media1.tenor.com/m/epsgnw_07kIAAAAC/sumo-ganbatte.gif" width="30%" height="30%"></p>
+<p align="center"><img src="https://c.tenor.com/epsgnw_07kIAAAAC/tenor.gif" width="30%" height="30%"></p>
 
