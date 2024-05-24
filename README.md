@@ -42,9 +42,11 @@ Notes:
       - use "__download-It_multi_quiet__yt-dlp.bat" with shorter urls, such as:  https://<i></i>vod-stream.nhk.jp/nhkworld/en/tv/sumo/tournament/[#####]/movies/[XYZ]/index_640x360_836k.m3u8
   + also, could manually run, "__sumo-gen-download-list.bat" , before downloading to get an ordered & well spaced STANDARD list of 'filenames' to download !
 
+- - - - - - - - - - -
+Updates:-
++ 2024-05-24 20:41 local time: added [__auto-grab.py](__/__auto-grab.py) { which utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) }  option to choose from when running main python script for the first time, to auto-generate download list from NHK-Grand-Sumo-Highlights website instead of manual input of parameters.
 
 possible future improvements:
-+ To auto-grab the tournament's year,month,stating day & rikishi-intro.-names. Simply from: [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) 
 + To write a helper-python-script to grab all the required .m3u8 urls from: [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) 
 - - - - - - - - - - -
 
