@@ -53,5 +53,5 @@ Notes:
 </b>
 
 
-<p align="center"><img src="https://www3.nhk.or.jp/nhkworld/en/tv/sumo/assets/images/logo.png" width="25%" height="25%"></p>
+<p align="center"><img src="https://media1.tenor.com/m/epsgnw_07kIAAAAC/sumo-ganbatte.gif" width="25%" height="25%"></p>
 
