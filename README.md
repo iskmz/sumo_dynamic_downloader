@@ -2,7 +2,8 @@
 
 
 - - - - - - - - - - -
-<b><p align="center"> こんにちは sumo fans ! </p></b>
+<b><p align="center"> こんにちは 
+sumo fans ! </p></b>
 - - - - - - - - - - -
 
 
@@ -43,5 +44,5 @@ Notes:
 </b>
 
 
-<p align="center"><img src="https://www3.nhk.or.jp/nhkworld/en/tv/sumo/assets/images/logo.png" width="50%" height="50%"></p>
+<p align="center"><img src="https://www3.nhk.or.jp/nhkworld/en/tv/sumo/assets/images/logo.png" width="25%" height="25%"></p>
 
