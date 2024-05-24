@@ -53,5 +53,6 @@ Notes:
 </b>
 
 
-<p align="center"><img src="https://media1.tenor.com/m/epsgnw_07kIAAAAC/sumo-ganbatte.gif" width="50%" height="50%"></p>
+
+<p align="center"><img src="https://media1.tenor.com/m/epsgnw_07kIAAAAC/sumo-ganbatte.gif" width="40%" height="40%"></p>
 
