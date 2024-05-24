@@ -1,8 +1,10 @@
 # sumo_dynamic_downloader
 
 
+- - - - - - - - - - -
+<b><p align="center"> こんにちは sumo fans ! </p></b>
+- - - - - - - - - - -
 
-dedicated for sumo fans !
 
 a python script to simplify the process of downloading grand-sumo-highlights found on [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) every Odd numbered month for every basho during that month !
 
