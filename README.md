@@ -4,14 +4,14 @@
 
 dedicated for sumo fans !
 
-a python script to simplify the process of downloading grand-sumo-highlights found on [NHK website][https://www3.nhk.or.jp/nhkworld/en/tv/sumo/] every Odd numbered month for every basho during that month !
+a python script to simplify the process of downloading grand-sumo-highlights found on [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) every Odd numbered month for every basho during that month !
 
 
 - - - - - - - - - - -
 
 prerequisites:  
   1. a windows OS
-  2. (ffmpeg)[https://ffmpeg.org/] & (yt-dlp)[https://github.com/yt-dlp/yt-dlp] installed and PATH set for both of them
+  2. [ffmpeg](https://ffmpeg.org/) & [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed and PATH set for both of them
   3. python3 installed
 
 
