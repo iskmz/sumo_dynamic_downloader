@@ -1,8 +1,6 @@
 # sumo_dynamic_downloader
 
 
-- - - - - - - - - - -
-
 <b>
 <p align="center"> こんにちは </p>
 <p align="center"> sumo fans ! </p>
