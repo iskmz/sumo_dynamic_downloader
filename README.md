@@ -32,7 +32,7 @@ Notes:
 - - - - - - - - - - -
 
 
-
+<b>
 <p align="center">楽しむ</p>
 
 
@@ -40,8 +40,8 @@ Notes:
 
 
 <p align="center">ありがとうございます</p>
+</b>
 
 
-
-<p align="center"><img src="https://www3.nhk.or.jp/nhkworld/en/tv/sumo/assets/images/logo.png" width="70%" height="70%"></p>
+<p align="center"><img src="https://www3.nhk.or.jp/nhkworld/en/tv/sumo/assets/images/logo.png" width="50%" height="50%"></p>
 
