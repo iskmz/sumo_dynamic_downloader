@@ -11,7 +11,9 @@
 - - - - - - - - - - -
 
 
-a python script to simplify the process of downloading grand-sumo-highlights found on [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) every odd-numbered month for every basho during that month !
+a python script to simplify the process of downloading grand-sumo-highlights found on [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) 
+
+the highlights are uploaded to the website every odd-numbered month for every basho during that month !
 
 
 - - - - - - - - - - -
