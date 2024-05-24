@@ -24,6 +24,8 @@ prerequisites:
   3. python3 installed
 
 
+how to use it ?
+
 simply create a folder for current month's basho (for e.g. "2024_05") , and copy the python script and the folder "__" and its contents inside it to that folder.
 Then, run the python script and follow the instructions.
 
