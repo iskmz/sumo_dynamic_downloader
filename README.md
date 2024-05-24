@@ -43,6 +43,9 @@ Notes:
   + also, could manually run, "__sumo-gen-download-list.bat" , before downloading to get an ordered & well spaced STANDARD list of 'filenames' to download !
 
 
+possible future improvements:
++ to make grabbing the tournament's year,month,stating day and rikishi-intro.-names automatic >>> simply from: [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) 
++ to write a helper-python-script to grab all the required .m3u8 urls from: [NHK website](https://www3.nhk.or.jp/nhkworld/en/tv/sumo/) 
 - - - - - - - - - - -
 
 
