@@ -9,6 +9,9 @@ DOWNLOAD_LIST_FILENAME = "zzz_toDownload.txt"
 
 def runListGen():
 	os.system('Call __\\__sumo-gen-download-list.bat')
+	
+def runAutoListGen():
+	os.system('__\\__auto-grab.py')
 
 def runDownload():
 	os.system('Call __\\__download-It_multi_quiet.bat')
@@ -86,7 +89,12 @@ def analyzeInput(str):
 os.system("title SUMO DYNAMIC DOWNLOADER")
 
 if not os.path.isfile(DOWNLOAD_LIST_FILENAME):
-	runListGen()
+	print("\n\n\t running for the FIRST time !!! \n\n")
+	inputStr = input(" Auto-Generate download list from NHK-Grand-Sumo-Highlights website ?!?? [y/else]: ")
+	if inputStr=="y" or inputStr=="Y":
+		runAutoListGen()
+	else:
+		runListGen()
 
 os.system("cls")
 
