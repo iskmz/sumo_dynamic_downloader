@@ -4,7 +4,7 @@
 - - - - - - - - - - -
 
 <b>
-<p align="center"> こんにちは <p>
+<p align="center"> こんにちは </p>
 <p align="center> sumo fans ! </p>
 </b>
   
