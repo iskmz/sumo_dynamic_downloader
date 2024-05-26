@@ -55,7 +55,7 @@ possible future improvements:
 <p align="center">楽しむ</p>
 
 
-<p align="center">&</p>
+<p align="center">と</p>
 
 
 <p align="center">ありがとうございます</p>
