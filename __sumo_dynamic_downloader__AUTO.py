@@ -204,6 +204,11 @@ for item in current_list:
 						items_to_get[item]=URL_prefix+data_dic[k]
 
 
+if not items_to_get:
+	print("\n\n\t ALL is UPDATED ... nothing will be downloaded at the moment ... goodbye ! \n")
+	os.system("timeout /T 11")
+	exit()
+
 print("\n > The following items will be downloaded:- \n")
 for k in (items_to_get.keys()):
 	print("\t\t",k)
