@@ -108,10 +108,6 @@ os.system("cls")
 
 # ------------------- PART 1: getting items list from main website into a dictionary data-type ------------------ #
 
-# TODO LATER
-# NOTE: SUMMARY video url is missing at the moment
-# TODO LATER 
-
 print("\n > checking what is available online to download !")
 
 print("\n > getting request from: " + URL + " ...")
@@ -147,8 +143,18 @@ for i in range(len(titles)):
 data_dic = dict(reversed(data_dic.items()))
 
 
-# ------------------- PART 2: comparing what is available currently online (data_dic) with local items list toDownload ! (i.e. what remains to get) ------------------ #
+# adding summary video m3u8 url to data_dic , if exists
+# notice that it already is an .m3u8 url , so less processing further on !
+summary_div = soup.find("div",{"id":"p-bout__video"})
+summary_img = summary_div.find("img")
+img_url = summary_img.attrs.get("src")
+if img_url.find("day")==-1:
+	if img_url.find("high")>0 or img_url.find("hlts")>0 or img_url.find("hgts")>0:
+		url = img_url.replace("images","movies").replace(".jpg","")
+		data_dic["summary"] =  m3u8_prefix_alt + url + m3u8_suffix_alt
 
+
+# ------------------- PART 2: comparing what is available currently online (data_dic) with local items list toDownload ! (i.e. what remains to get) ------------------ #
 
 print("\n > comparing what is available with what is required to update/download ! ")
 
@@ -186,7 +192,9 @@ for item in current_list:
 				elif k.find(item[6:7])>-1:
 					items_to_get[item]=URL_prefix+v
 	elif item.find("summary")>-1:
-		print() # TODO LATER, when current tournament ends 
+		for k,v in data_dic.items():
+			if k.find("summary")>-1:
+				items_to_get[item] = v
 	else:
 		day_num = int(item[0:2])
 		for k in sorted(data_dic.keys()):
@@ -220,8 +228,9 @@ print("\n")
 
 print("\n > grabbing .m3u8 urls for videos ... it will take about ~ ",DELAY*2+8," seconds / per url ... be patient !")
 
-
-for k,v in items_to_get.items():  # TODO for summary video url later ! at the end ! 
+for k,v in items_to_get.items():
+	if k.find("summary")>-1:
+		continue  # skip this iteration , as "v" is already an .m3u8 url !
 	if k[:2]=="00":
 		if k=="00__PREVIEW":
 			items_to_get[k]=get_m3u8_url(items_to_get[k])
@@ -233,7 +242,6 @@ for k,v in items_to_get.items():  # TODO for summary video url later ! at the en
 
 print("\n\n > done grabbing required .m3u8 urls ... download will start in ...")
 os.system("timeout /T 11")
-
 
 # ------------------- PART 4: downloading and updating _urls.txt along the way  ------------------ #
 
@@ -259,7 +267,6 @@ for k,v in items_to_get.items():
 
 
 print("\n\n"," - "*(11),"\n\n")
-
 
 updateDownloadTxtFile()
 os.system("pause")
