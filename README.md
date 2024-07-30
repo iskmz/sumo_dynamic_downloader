@@ -50,7 +50,7 @@ Updates:-
 + 2024-07-25 22:45  local time:  added [__sumo_dynamic_downloader__AUTO.py](__sumo_dynamic_downloader__AUTO.py) ... which as the name says, does everything AUTOMATICALLY  ... simply double-click on it .. and leave it to do it all ...
     + it runs [__auto-grab.py](__/__auto-grab.py) if run for first time , and afterwards it compares what is available (already downloaded) with what can be downloaded/updated currently from the website ... then it grabs .m3u8 files required for each item to be downloaded, and downloads it all one by one ... all automatically , you just have to double click on it !
     + Of course, it utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) , which should be installed along with python3, ffmpeg, yt-dlp , & with PATH set for all !
-    + remains TODO: is to add option for downloading the "summary" video .. hopefully , at the end of this month, when it is uploaded !
+    + ~~remains TODO: is to add option for downloading the "summary" video .. hopefully , at the end of this month, when it is uploaded !~~ (added on 10:45 2024-07-30)
     +  using this AUTO script .. sumo basho videos could be downloaded automatically if running task-scheduler from windows and configuring it to run this auto script during each basho's Odd-numbered month. Should make sure to run it inside a different folder for each basho, to avoid conflicts !
   
 - - - - - - - - - - -
