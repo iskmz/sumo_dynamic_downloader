@@ -187,10 +187,13 @@ for item in current_list:
 	elif item[:4]=="LIVE":
 		for k,v in data_dic.items():
 			if k.find("LIVE")>-1:
-				if k.find(item[5:7])>-1:
+				if k.find(item[5:7])>-1:     # finds LIVE for days 14 & 15 => 2 chars
 					items_to_get[item]=URL_prefix+v
-				elif k.find(item[6:7])>-1:
-					items_to_get[item]=URL_prefix+v
+				elif k.find(item[6:7])>-1:	# finds LIVE for days 1 & 8 => 1 char
+					if int(item[6:7])==1 and (k.find("DAY 14")>-1 or k.find("DAY 15")>-1): # special case !
+						break
+					else:
+						items_to_get[item]=URL_prefix+v
 	elif item.find("summary")>-1:
 		for k,v in data_dic.items():
 			if k.find("summary")>-1:
