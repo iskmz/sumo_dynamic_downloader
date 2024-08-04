@@ -30,7 +30,7 @@ prerequisites:
 
 how to use it ?
 
-simply create a folder for current month's basho (for e.g. "2024_05") , and copy the python script and the folder "__" and its contents inside it to that folder.
+simply create a folder for current month's basho (for e.g. "2024_05") , and copy the python script ~~and the folder "__" and its contents inside it~~ to that folder.
 Then, run the python script and follow the instructions.
 
 
@@ -45,13 +45,26 @@ Notes:
 - - - - - - - - - - -
 Updates:-
 
-+ 2024-05-24 20:41 local time: added [__auto-grab.py](__/__auto-grab.py) { which utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) }  option to choose from when running main python script for the first time, to auto-generate download list from NHK-Grand-Sumo-Highlights website instead of manual input of parameters.
++ 2024-05-24 20:41 local time: added [__auto-grab.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__/__auto-grab.py) { which utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) }  option to choose from when running main python script for the first time, to auto-generate download list from NHK-Grand-Sumo-Highlights website instead of manual input of parameters.
 
-+ 2024-07-25 22:45  local time:  added [__sumo_dynamic_downloader__AUTO.py](__sumo_dynamic_downloader__AUTO.py) ... which as the name says, does everything AUTOMATICALLY  ... simply double-click on it .. and leave it to do it all ...
-    + it runs [__auto-grab.py](__/__auto-grab.py) if run for first time , and afterwards it compares what is available (already downloaded) with what can be downloaded/updated currently from the website ... then it grabs .m3u8 files required for each item to be downloaded, and downloads it all one by one ... all automatically , you just have to double click on it !
++ 2024-07-25 22:45  local time:  added [__sumo_dynamic_downloader__AUTO.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__sumo_dynamic_downloader__AUTO.py) ... which as the name says, does everything AUTOMATICALLY  ... simply double-click on it .. and leave it to do it all ...
+    + it runs [__auto-grab.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__/__auto-grab.py) if run for first time , and afterwards it compares what is available (already downloaded) with what can be downloaded/updated currently from the website ... then it grabs .m3u8 files required for each item to be downloaded, and downloads it all one by one ... all automatically , you just have to double click on it !
     + Of course, it utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) , which should be installed along with python3, ffmpeg, yt-dlp , & with PATH set for all !
     + ~~remains TODO: is to add option for downloading the "summary" video .. hopefully , at the end of this month, when it is uploaded !~~ (added on 10:45 2024-07-30)
     +  using this AUTO script .. sumo basho videos could be downloaded automatically if running task-scheduler from windows and configuring it to run this auto script during each basho's Odd-numbered month. Should make sure to run it inside a different folder for each basho, to avoid conflicts !
+
++ 2024-08-04 18:05 local time:
+  - all the files inside "__" folder were replaced by code in a single file: "[__sumo_dynamic_downloader__.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dynamic_downloader__.py)" , including code for legacy batch scripts (converted to python code) and for other .py scripts (integrated into main one)
+  - all the scripts for AUTO downloading are inside as well !
+  - also added a new BOTD script , to download "bouts-of-the-day" which appear every single day of the basho (for the previous day)
+    + it is better to run BOTD after the basho's last day to get all the files required at once
+    + it works for previous/historic bashos as well , but might miss a few (or many) bouts-of-the-day [could be already deleted from site storage , or , simply, my-code didn't "guess" the right .m3u8 url]
+  - to run BOTD functions directly, simply double click on [__sumo_dynamic_downloader__botd.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dynamic_downloader__botd.py)
+  - to run AUTO-downloader functions directly, simply double click on [__sumo_dynamic_downloader__auto.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dynamic_downloader__auto.py)
+  - the scripts "__sumo_dynamic_downloader__auto.py" & "__sumo_dynamic_downloader__botd.py" are simply a helper one-liners to call what is needed from the main script !
+  - <b>PREVIOUS CODE FILES WERE ARCHIVED: check the [OLD_20240804](https://github.com/iskmz/sumo_dynamic_downloader/tree/OLD_20240804) branch.</b>
+
+
   
 - - - - - - - - - - -
 
