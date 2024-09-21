@@ -43,17 +43,34 @@ Notes:
   + also, could manually run, "__sumo-gen-download-list.bat" , before downloading to get an ordered & well spaced STANDARD list of 'filenames' to download !
 
 - - - - - - - - - - -
+
+
 Updates:-
 
-+ 2024-05-24 20:41 local time: added [__auto-grab.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__/__auto-grab.py) { which utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) }  option to choose from when running main python script for the first time, to auto-generate download list from NHK-Grand-Sumo-Highlights website instead of manual input of parameters.
 
-+ 2024-07-25 22:45  local time:  added [__sumo_dynamic_downloader__AUTO.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__sumo_dynamic_downloader__AUTO.py) ... which as the name says, does everything AUTOMATICALLY  ... simply double-click on it .. and leave it to do it all ...
-    + it runs [__auto-grab.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__/__auto-grab.py) if run for first time , and afterwards it compares what is available (already downloaded) with what can be downloaded/updated currently from the website ... then it grabs .m3u8 files required for each item to be downloaded, and downloads it all one by one ... all automatically , you just have to double click on it !
-    + Of course, it utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) , which should be installed along with python3, ffmpeg, yt-dlp , & with PATH set for all !
-    + ~~remains TODO: is to add option for downloading the "summary" video .. hopefully , at the end of this month, when it is uploaded !~~ (added on 10:45 2024-07-30)
-    +  using this AUTO script .. sumo basho videos could be downloaded automatically if running task-scheduler from windows and configuring it to run this auto script during each basho's Odd-numbered month. Should make sure to run it inside a different folder for each basho, to avoid conflicts !
+<details>
+<summary> 2024-05-24 20:41 </summary>
 
-+ 2024-08-04 18:05 local time:
+* added [__auto-grab.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__/__auto-grab.py) { which utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) }  option to choose from when running main python script for the first time, to auto-generate download list from NHK-Grand-Sumo-Highlights website instead of manual input of parameters.
+    
+</details>
+
+
+<details>
+<summary> 2024-07-25 22:45 </summary>
+
+  + added [__sumo_dynamic_downloader__AUTO.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__sumo_dynamic_downloader__AUTO.py) ... which as the name says, does everything AUTOMATICALLY  ... simply double-click on it .. and leave it to do it all ...
+  + it runs [__auto-grab.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/OLD_20240804/__/__auto-grab.py) if run for first time , and afterwards it compares what is available (already downloaded) with what can be downloaded/updated currently from the website ... then it grabs .m3u8 files required for each item to be downloaded, and downloads it all one by one ... all automatically , you just have to double click on it !
+  + Of course, it utilizes [selenium](https://pypi.org/project/selenium/) webdriver & [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) , which should be installed along with python3, ffmpeg, yt-dlp , & with PATH set for all !
+  + ~~remains TODO: is to add option for downloading the "summary" video .. hopefully , at the end of this month, when it is uploaded !~~ (added on 10:45 2024-07-30)
+  +  using this AUTO script .. sumo basho videos could be downloaded automatically if running task-scheduler from windows and configuring it to run this auto script during each basho's Odd-numbered month. Should make sure to run it inside a different folder for each basho, to avoid conflicts !
+
+</details>
+
+
+<details>
+<summary> 2024-08-04 18:05 </summary>
+
   - all the files inside "__" folder were replaced by code in a single file: "[__sumo_dynamic_downloader__.py](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dynamic_downloader__.py)" , including code for legacy batch scripts (converted to python code) and for other .py scripts (integrated into main one)
   - all the scripts for AUTO downloading are inside as well !
   - also added a new BOTD script , to download "bouts-of-the-day" which appear every single day of the basho (for the previous day)
@@ -64,8 +81,20 @@ Updates:-
   - the scripts "__sumo_dynamic_downloader__auto.py" & "__sumo_dynamic_downloader__botd.py" are simply a helper one-liners to call what is needed from the main script !
   - <b>PREVIOUS CODE FILES WERE ARCHIVED: check the [OLD_20240804](https://github.com/iskmz/sumo_dynamic_downloader/tree/OLD_20240804) branch.</b>
 
+</details>
 
-  
+<details>
+<summary> 2024-09-21 09:11</summary>
+
+  - <b>PREVIOUS CODE FILES WERE ARCHIVED: check the [OLD_20240921](https://github.com/iskmz/sumo_dynamic_downloader/tree/OLD_20240921) branch.</b>
+  - instead, uploaded a single code file (similar to the last one) but with a selection menu at the beginning to choose from:  AUTO|MAIN|BOTD|EXIT
+  - therefore, no need for additional helper one-liner scripts like in the previous branch/update
+  - for further details regarding the selection menu code , check [python_generic_console_menu](https://github.com/iskmz/python_generic_console_menu) repo.
+  - also: few bug fixes
+
+</details>
+
+
 - - - - - - - - - - -
 
 
