@@ -99,6 +99,8 @@ Updates:-
   - for further details regarding the selection menu code , check [python_generic_console_menu](https://github.com/iskmz/python_generic_console_menu) repo.
   - also: few bug fixes
 
+<p align="center"><img src="https://github.com/user-attachments/assets/7bac5ed3-e824-4db0-9e77-d71f9da2da59"/></p>
+
 </details>
 
 
