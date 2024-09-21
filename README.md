@@ -24,7 +24,7 @@ the highlights are uploaded to the website every odd-numbered month for every ba
 prerequisites:  
   1. a windows OS
   2. [ffmpeg](https://ffmpeg.org/) & [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed & PATH set for both
-  3. python3 installed
+  3. python3 installed + required modules installed (check top of the script)
 
 
 
