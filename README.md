@@ -97,7 +97,7 @@ Updates:-
   - instead, uploaded a single code file (similar to the last one) but with a selection menu at the beginning to choose from:  AUTO|MAIN|BOTD|EXIT
   - therefore, no need for additional helper one-liner scripts like in the previous branch/update
   - for further details regarding the selection menu code , check [python_generic_console_menu](https://github.com/iskmz/python_generic_console_menu) repo.
-  - also: few bug fixes
+  - also: few bug fixes (more on: 2024-09-23)
 
 <p align="center"><img src="https://github.com/user-attachments/assets/7bac5ed3-e824-4db0-9e77-d71f9da2da59"/></p>
 
