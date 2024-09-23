@@ -339,6 +339,7 @@ def leading_zero(num):
 	else:
 		return str(num)
 
+# updated:	2024-09-23 , added more options (option #2) for botd-url-"guessing"
 def botd_main():
 	os.system("title sumo -- BOUT OF THE DAY -- downloader")
 	os.system("cls")
@@ -350,17 +351,28 @@ def botd_main():
 	start_day = input("\n  Enter basho's starting day [DD]: ")
 	year=year[2:]
 	m3u8_urls_list = []
+	m3u8_urls_list_2 = []
 	filename_list = []
 	for i in range (1,16):
 		url_str = botd_url_prefix + str(i) + "_" + year + month + (leading_zero(int(start_day)+i)) + botd_url_suffix
+		url_str_2 = botd_url_prefix + str(i) + "_" + month + (leading_zero(int(start_day)+i)) + botd_url_suffix
 		m3u8_urls_list.append(url_str)
+		m3u8_urls_list_2.append(url_str_2)
 		day_order = leading_zero(i)
 		filename_list.append(day_order+"_"+(str(int(start_day)+i-1)))
-	print("\n\n\t > Downloading bouts of the day ... \n")
+	print("\n\n\t > Downloading bouts of the day ... (url option #1) \n")
 	for filename,url in zip(filename_list,m3u8_urls_list):
 		print("\n "+ filename +": ")
 		os.system("yt-dlp \""+url+"\" -o \""+"/"+destination_folder_name+filename+".mp4\" --quiet --no-warnings --progress")
-		os.system("echo " +filename+ ":  " +url+ ">> \""+destination_folder_name+"_urls.txt\"")
+		MISSING_STATUS = "\t MISSING" if not os.path.isfile(destination_folder_name+filename+".mp4") else ""
+		os.system("echo " +filename+ ":  " +url+MISSING_STATUS+ ">> \""+destination_folder_name+"_urls.txt\"")
+	print("\n\n\t > Downloading bouts of the day ... (url option #2) .. for UN-downloaded bouts only ! \n")
+	for filename,url in zip(filename_list,m3u8_urls_list_2):
+		if not os.path.isfile(destination_folder_name+filename+".mp4"):
+			print("\n "+ filename +": ")
+			os.system("yt-dlp \""+url+"\" -o \""+"/"+destination_folder_name+filename+".mp4\" --quiet --no-warnings --progress")
+			MISSING_STATUS = "\t MISSING" if not os.path.isfile(destination_folder_name+filename+".mp4") else ""
+			os.system("echo " +filename+ ":  " +url+MISSING_STATUS+ ">> \""+destination_folder_name+"_urls.txt\"")
 	print("\n\n\t DONE !!!\n\n")
 	os.system("pause")
 
