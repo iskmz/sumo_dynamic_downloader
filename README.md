@@ -103,6 +103,20 @@ Updates:-
 
 </details>
 
+<details>
+<summary> 2025-07-22 13:11 </summary>
+
+  - <b> previous code file was NOT archived , only updated ... </b>
+  - two main issues / errors were addressed:
+      + Minor compatibility issue with BOTD downloads which appeared after updating yt-dlp to the "2025.05.22" release. A simple fix was by removing "/" for some file-path generated in the code solved the issue.
+      + Major issue which appeared this month , and it is most likely NOT related to the yt-dlp update: All AUTO features suddenly FAILED, reason unknown, but some digging suggested selenium & chrome-driver issue related to "ERR_HTTP2_PROTOCOL_ERROR".  Could not fix this issue directly, so instead replaced the chrome-driver which selenium uses with the FIREFOX webdriver, and kept an option/switch to return back to chrome-driver if needed (by changing a boolean at the top of the code). HOWEVER, currently, firefox webdriver is the DEFAULT used with selenium, and it might need [geckodriver](https://github.com/mozilla/geckodriver/releases) downloaded and PATH set for it , depending on the firefox version installed. It worked fine without it in my system, so it might have came pre-installed with firefox browser.  Needless to say: FIREFOX web-browser must be installed on your system for the code to work.
+  - I suggest keeping the FIREFOX webdriver, because it is much cleaner when downloading, as it does not add extra prompts that I could not hide when using chrome-driver.
+  - Also: added some minor fixes and extra prompts when downloading .m3u8 urls.
+  - SOMETIMES: .m3u8 urls do not get grabbed for UNKNOWN reason, in that case they are skipped (the ones that fail to be grabbed). This issue was always resolved by simply RE-RUNNING the script again (or 3 times) until the URL gets grabbed. It might be related to some "delay" in the selenium driver.
+  - NOTE: should use the yt-dlp 2025.05.22 release with this script, as newer updates were not tested and might have some new issues/errors.
+
+
+</details>
 
 - - - - - - - - - - -
 
