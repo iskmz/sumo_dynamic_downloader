@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait as wdwait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.firefox.options import Options as firefoxOptions # FIX on 2025-07-22
 import time
 import os
 import sys
@@ -22,7 +23,7 @@ m3u8_prefix = "https://eqj833muwr.eq.webcdn.stream.ne.jp/www50/eqj833muwr/jmc_pu
 m3u8_suffix = "_22.m3u8"  # 22=HD-quality(720p) # try 23 for higher # 19 or 21 for lower
 m3u8_prefix_alt = "https://vod-stream.nhk.jp"
 m3u8_suffix_alt = "/index_640x360_836k.m3u8"
-
+USE_FIREFOX = True # FIX on 2025-07-22  # if FALSE: default ChromeDriver is used with Selenium # 
 
 # ------------------- functions (common for all sections) ---------------- #
 
@@ -49,6 +50,19 @@ def get_chrome_options(webdriver):
 	chrome_options.headless = True
 	return chrome_options
 
+# FIX on 2025-07-22
+def get_firefox_options(webdriver):
+	firefox_options = firefoxOptions()
+	firefox_options.add_argument("-headless")
+	return firefox_options
+	
+# FIX on 2025-07-22
+def SELECT_WEBDRIVER():
+	if USE_FIREFOX:  
+		return wd.Firefox(options=get_firefox_options(wd))
+	else:
+		return wd.Chrome(options=get_chrome_options(wd))
+	
 def down_list_gen(year,month,start_day,rikishi_list):
 	# year="YYYY", month="MM", start_day="DD" 
 	# all are strings
@@ -80,7 +94,7 @@ def down_list_gen(year,month,start_day,rikishi_list):
 def auto_grab_py():
 	# to replace the old "__auto-grab.py" script
 	print("\n\n"+" > getting request from: "+URL+" ...")
-	driver = wd.Chrome(options=get_chrome_options(wd))
+	driver = SELECT_WEBDRIVER() # FIX on 2025-07-22
 	driver.get(URL)
 	soup = bs(driver.page_source,'html.parser')
 	driver.quit()
@@ -118,7 +132,7 @@ def sumo_gen_download_list():
 
 
 def get_m3u8_url(page_url):
-	driver = wd.Chrome(options=get_chrome_options(wd))
+	driver = SELECT_WEBDRIVER() # FIX on 2025-07-22
 	driver.get(page_url)
 	try:
 		myElem = wdwait(driver, DELAY).until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
@@ -144,7 +158,7 @@ def get_m3u8_url(page_url):
 	return m3u8_url
 
 def get_m3u8_url_alt(page_url):
-	driver = wd.Chrome(options=get_chrome_options(wd))
+	driver = SELECT_WEBDRIVER() # FIX on 2025-07-22
 	driver.get(page_url)
 	try:
 		myElem = wdwait(driver, DELAY).until(EC.presence_of_element_located((By.TAG_NAME, 'a')))
@@ -162,7 +176,7 @@ def get_m3u8_url_alt(page_url):
 
 def get_available_items():
 	print("\n > getting request from: " + URL + " ...")
-	driver = wd.Chrome(options=get_chrome_options(wd))
+	driver = SELECT_WEBDRIVER() # FIX on 2025-07-22
 	driver.get(URL)
 	soup = bs(driver.page_source,'html.parser')
 	driver.quit()
@@ -296,9 +310,9 @@ def auto_main():
 					items_to_get[k]=get_m3u8_url_alt(items_to_get[k])
 			else:
 				items_to_get[k]=get_m3u8_url(items_to_get[k])
+			print("\n + grabbed m3u8 URL for: ",k)
 		except Exception as e:
-			print("UNKNOWN ERROR while grabbing .m3u8 url for: ",k)
-			print("skipping this one !\n")
+			print("\n\t - UNKNOWN ERROR while grabbing .m3u8 url for: ",k,"\t -- SKIPPING THIS ONE !")
 			items_to_get[k]="" # mark it for PART 4 !
 	print("\n\n > done grabbing required .m3u8 urls ... download will start in ...")
 	os.system("timeout /T 11")
@@ -363,14 +377,14 @@ def botd_main():
 	print("\n\n\t > Downloading bouts of the day ... (url option #1) \n")
 	for filename,url in zip(filename_list,m3u8_urls_list):
 		print("\n "+ filename +": ")
-		os.system("yt-dlp \""+url+"\" -o \""+"/"+destination_folder_name+filename+".mp4\" --quiet --no-warnings --progress")
+		os.system("yt-dlp \""+url+"\" -o \""+destination_folder_name+filename+".mp4\" --quiet --no-warnings --progress")
 		MISSING_STATUS = "\t MISSING" if not os.path.isfile(destination_folder_name+filename+".mp4") else ""
 		os.system("echo " +filename+ ":  " +url+MISSING_STATUS+ ">> \""+destination_folder_name+"_urls.txt\"")
 	print("\n\n\t > Downloading bouts of the day ... (url option #2) .. for UN-downloaded bouts only ! \n")
 	for filename,url in zip(filename_list,m3u8_urls_list_2):
 		if not os.path.isfile(destination_folder_name+filename+".mp4"):
 			print("\n "+ filename +": ")
-			os.system("yt-dlp \""+url+"\" -o \""+"/"+destination_folder_name+filename+".mp4\" --quiet --no-warnings --progress")
+			os.system("yt-dlp \""+url+"\" -o \""+destination_folder_name+filename+".mp4\" --quiet --no-warnings --progress")
 			MISSING_STATUS = "\t MISSING" if not os.path.isfile(destination_folder_name+filename+".mp4") else ""
 			os.system("echo " +filename+ ":  " +url+MISSING_STATUS+ ">> \""+destination_folder_name+"_urls.txt\"")
 	print("\n\n\t DONE !!!\n\n")
