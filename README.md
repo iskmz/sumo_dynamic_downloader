@@ -23,8 +23,9 @@ the highlights are uploaded to the website every odd-numbered month for every ba
 
 prerequisites:  
   1. a windows OS
-  2. [ffmpeg](https://ffmpeg.org/) & [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed & PATH set for both
-  3. python3 installed + required modules installed (check imports at top of the script)
+  2. FIREFOX browser installed (used as a web driver, as of the 2025-07-22 update; check Updates below)
+  3. [ffmpeg](https://ffmpeg.org/) & [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed & PATH set for both
+  4. python3 installed + required modules installed (check imports at top of the script)
 
 
 
