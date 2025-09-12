@@ -11,6 +11,7 @@ import os
 import sys
 import keyboard
 import threading
+import re # FIX on 2025-09-12 
 
 # ------------------------ constants ------------------------------------- #
 
@@ -100,11 +101,19 @@ def auto_grab_py():
 	driver.quit()
 	print("\n"+" > analyzing page and generating output data ...\n")
 	strMonthDay = soup.find_all(class_="p-hero__date")[0].contents[0]
-	firstSpace = strMonthDay.index(" ")
-	monthName=strMonthDay[:firstSpace]
-	startDay=strMonthDay[firstSpace+1:strMonthDay.index("-")]
+	# ------ OLD METHOD , below , commented out !
+	# ------ replaced by using REGEX pattern on 2025-09-12 
+	# ------ for better adaptation with site changes 
+	# firstSpace=strMonthDay.index(" ")
+	# monthName=strMonthDay[:firstSpace]
+	# startDay=strMonthDay[firstSpace+1:strMonthDay.index("-")]
+	# ------ #
+	regex = re.search(r'[0-9]',strMonthDay)
+	firstNum = regex.start() # index of first occurrence of a digit:[0-9]
+	monthName=strMonthDay[:firstNum-1]
+	startDay=strMonthDay[firstNum:strMonthDay.index("-")]
 	year = str(dt.now().year)
-	months = {"January":"01","March":"03","May":"05","July":"07","September":"09","November":"11"}
+	months = {"January":"01","March":"03","May":"05","July":"07","September":"09","November":"11","Jan":"01","Mar":"03","Jul":"07","Sep":"09","Nov":"11"}  # added 3-letter month-names for the 2025-09-12 FIX
 	titles_list = soup.find_all(class_="c-day")
 	rikishi_list = []
 	for title in titles_list:
