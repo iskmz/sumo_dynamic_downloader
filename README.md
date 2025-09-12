@@ -120,10 +120,11 @@ Updates:-
 </details>
 
 
-
+<details>
 <summary> 2025-09-12 13:19 </summary>
-
-minor fix: used regex for pattern recognition for better adaptability with site changes (check changes in lines 104-116)
+  
+  - <b> previous code file was NOT archived , only updated ... </b>
+  - minor fix: used regex for pattern recognition for better adaptability with site changes (check changes in lines 104-116)
 
 </details>
 
