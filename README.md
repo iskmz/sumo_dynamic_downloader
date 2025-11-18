@@ -130,6 +130,25 @@ Updates:-
 
 - - - - - - - - - - -
 
+<h3><b> MAJOR CHANGES </b></h3>
+<h4><i>2025.11.18</i></h4>
+
+Towards the end of the 2025.09 basho, there were major changes to NHK website video player and the way [.m3u8] streams are handled. These changes persist to this day and resulted in failure of the AUTO section of the [__sumo_dd__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dd__.py) ; other parts MAIN & BOTD still work fine, and also the 4 "rikishi" videos can be downloaded using the AUTO section but all others fail to download due to these changes.
+
+uploaded a temporary batch script to help fasten the now NOT AUTOMATIC download process [__V3A1MD__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__V3A1MD__.bat) ; it helps make manual downloads faster but .m3u8 urls need to be manually copied again as explained in the NOTES section above for each video individually ; and now audio and video are separated due to NHK changes so two streams are needed to be downloaded for each video !  one video [v3.m3u8] and one audio [a1.m3u8] , hence the V3A1 in the name and also they need to be merged [M] into one .mp4 file and then deleted [D] , so it's <b><i>V3A1MD protocol</b></i>.
+
+The batch scripts handles the download, merge and delete process using ffmpeg only, so no python is needed for this.
+
+It only needs the titles to be provided to it , by editing the LIST variable at the top of the script BEFORE running it. Title names could be copied from the "zzz_toDownload.txt" files generated from the sumo_dd auto script when it first runs. Then, after doing so and running the batch scripts it only ask for the v3 & a1 .m3u8 streams which the user needs to copy from chrome-dev-tools as explained in NOTES section above.
+Afterwards, download is handled quietly using ffmpeg. There is a pause before each section [merge or delete] so that the user can check things out and continue or exit.
+
+Unfortunately, a permanent fix for the sumo_dd python script won't be written in the near future due to busy schedule !
+
+maybe towards the spring/summer of 2026 !
+
+
+- - - - - - - - - - -
+
 
 <b>
 <p align="center">楽しむ</p>
