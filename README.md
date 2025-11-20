@@ -131,6 +131,13 @@ Updates:-
 - - - - - - - - - - -
 
 <h3><b> MAJOR CHANGES </b></h3>
+
+<h4><i>2025.11.20</i></h4>
+
+an update to batch script V3A1MD:
+
+instead of inputing items to LIST by editing this script, added an input loop at the start so that users simply copy titles from zzz_toDownload.txt after running the script. NO need for editing the LIST anymore.
+
 <h4><i>2025.11.18</i></h4>
 
 Towards the end of the 2025.09 basho, there were major changes to NHK website video player and the way [.m3u8] streams are handled. These changes persist to this day and resulted in failure of the AUTO section of the [__sumo_dd__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dd__.py) ; other parts MAIN & BOTD still work fine, and also the 4 "rikishi" videos can be downloaded using the AUTO section but all others fail to download due to these changes.
