@@ -15,15 +15,11 @@ title SUMO - V3A1MD
 :: merge v+a
 :: delete v and a
 :: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-:: BEFORE running this batch script
-:: manually edit the LIST below for the required TITLES to be downloaded
-:: get the TITLE NAMES from zzz_toDownload.txt based on what is new on the website
-:: separate items by a single space
-
-SET LIST=[TITLE_1] [TITLE_2] [TITLE_3] [TITLE_4]
-
-:: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-::                             NO EDITS BELOW THIS LINE
+:: EDITED on 2025.11.20
+:: instead of inputing items to LIST by editing this script
+:: added an input loop at the start so that so that users
+:: simply copy titles from zzz_toDownload.txt  after
+:: running the script. NO need for editing the LIST.
 :: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo.
@@ -35,13 +31,33 @@ echo.
 
 setlocal enabledelayedexpansion
 
+
+:: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+::   INPUT titles of required videos
+:: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SET /p amount="+  Enter amount of TITLES to download: "
+SET /A _amount=%amount%
+echo.
+echo.
+
+if %_amount% LSS 1 goto END
+
+SET /p LIST=">>  TITLE_1: "
+
+FOR /L %%A IN (2,1,%_amount%) DO (
+	SET /p var=">>  TITLE_%%A: "
+	SET var= !var!
+	SET LIST=!LIST!!var!
+)
+
 :: - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ::  INPUT m3u8 urls for V3 and A1 
 :: - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo.
 echo.
-echo    Enter m3u8 urls for-each title ... FIRST  v3  THEN  a1 :-
+echo +  Enter m3u8 urls for-each title ... FIRST  v3  THEN  a1 :-
 echo.
 echo.
 
@@ -131,6 +147,8 @@ echo.
 
 del "*_v.mp4" 
 del "*_a.mp4"
+
+:END
 
 endlocal
 
