@@ -21,7 +21,8 @@ the highlights are uploaded to the website every odd-numbered month for every ba
 - - - - - - - - - - -
 
 
-prerequisites:  
+<h3> prerequisites </h3>
+
   1. a windows OS
   2. FIREFOX browser installed (used as a web driver, as of the 2025-07-22 update; check Updates below)
   3. [ffmpeg](https://ffmpeg.org/) & [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed & PATH set for both
@@ -36,9 +37,10 @@ simply create a folder for current month's basho (for e.g. "2024_05") , and copy
 
 - - - - - - - - - - -
 
+<h3> NOTES </h3>
 
 <details>
-<summary> Notes (more relevant to older versions) </summary>
+<summary> ... (more relevant to older versions) ... </summary>
 
   + to get the m3u8-urls needed for download, open the website url above, using chrome browser, during the basho month - as the videos are removed afterwards; then hit F12 for developer settings, click on the Network Tab above and look for the .m3u8 url needed, after playing the video.
   + everytime, could use the 'legacy' batch scripts provided to download 'manually', but it's a longer process, which was simplified by the python script
@@ -53,7 +55,7 @@ simply create a folder for current month's basho (for e.g. "2024_05") , and copy
 - - - - - - - - - - -
 
 
-Updates:-
+<h3> UPDATES </h3>
 
 
 <details>
