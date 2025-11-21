@@ -130,30 +130,50 @@ simply create a folder for current month's basho (for e.g. "2024_05") , and copy
 
 </details>
 
-- - - - - - - - - - -
 
-<h3><b> MAJOR CHANGES </b></h3>
+<details>
+<summary> 2025-11-18 </summary>
 
-<h4><i>2025.11.20</i></h4>
+  <h4><b> MAJOR CHANGES </b></h4>
+  
+  - Towards the end of the 2025.09 basho, there were major changes to NHK website video player and the way [.m3u8] streams are handled. These changes persist to this day and resulted in failure of the AUTO section of the [__sumo_dd__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dd__.py) ; other parts MAIN & BOTD still work fine, and also the 4 "rikishi" videos can be downloaded using the AUTO section but all others fail to download due to these changes.
+  - uploaded a temporary batch script to help in handling the now NOT AUTOMATIC download process [__V3A1MD__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__V3A1MD__.bat) ; it helps make manual downloads easier but .m3u8 urls need to be manually copied again as explained in the NOTES section above for each video individually ; and now audio and video are separated due to NHK changes so two streams are needed to be downloaded for each video !  one video [v3.m3u8] and one audio [a1.m3u8] , hence the V3A1 in the name and also they need to be merged [M] into one .mp4 file and then deleted [D] , so it's <b><i>V3A1MD protocol</b></i>.
+  - The batch script handles the download, merge and delete process using ffmpeg only, so no python is needed for this.
+  - It only needs the titles to be provided to it , by editing the LIST variable at the top of the script BEFORE running it. Title names could be copied from the "zzz_toDownload.txt" files generated from the sumo_dd auto script when it first runs. Then, after doing so and running the batch scripts it only ask for the v3 & a1 .m3u8 streams which the user needs to copy from chrome-dev-tools as explained in NOTES section above. Afterwards, download is handled quietly using ffmpeg. There is a pause before each section [merge or delete] so that the user can check things out and continue or exit.
+  - ~~Unfortunately, a permanent fix for the sumo_dd python script won't be written in the near future due to busy schedule !~~
+  - ~~maybe towards the spring/summer of 2026 !~~
+  - <b>FIXED AUTO SECTION on 2025.11.21 !</b>
 
-an update to batch script V3A1MD:
+</details>
 
-instead of inputing items to LIST by editing this script, added an input loop at the start so that users simply copy titles from zzz_toDownload.txt after running the script. NO need for editing the LIST anymore.
 
-<h4><i>2025.11.18</i></h4>
+<details>
+<summary> 2025-11-20 </summary>
+  
+- an update to batch script V3A1MD: instead of inputing items to LIST by editing this script, added an input loop at the start so that users simply copy titles from zzz_toDownload.txt after running the script. NO need for editing the LIST anymore.
 
-Towards the end of the 2025.09 basho, there were major changes to NHK website video player and the way [.m3u8] streams are handled. These changes persist to this day and resulted in failure of the AUTO section of the [__sumo_dd__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dd__.py) ; other parts MAIN & BOTD still work fine, and also the 4 "rikishi" videos can be downloaded using the AUTO section but all others fail to download due to these changes.
 
-uploaded a temporary batch script to help in handling the now NOT AUTOMATIC download process [__V3A1MD__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__V3A1MD__.bat) ; it helps make manual downloads easier but .m3u8 urls need to be manually copied again as explained in the NOTES section above for each video individually ; and now audio and video are separated due to NHK changes so two streams are needed to be downloaded for each video !  one video [v3.m3u8] and one audio [a1.m3u8] , hence the V3A1 in the name and also they need to be merged [M] into one .mp4 file and then deleted [D] , so it's <b><i>V3A1MD protocol</b></i>.
 
-The batch scripts handles the download, merge and delete process using ffmpeg only, so no python is needed for this.
+</details>
 
-It only needs the titles to be provided to it , by editing the LIST variable at the top of the script BEFORE running it. Title names could be copied from the "zzz_toDownload.txt" files generated from the sumo_dd auto script when it first runs. Then, after doing so and running the batch scripts it only ask for the v3 & a1 .m3u8 streams which the user needs to copy from chrome-dev-tools as explained in NOTES section above.
-Afterwards, download is handled quietly using ffmpeg. There is a pause before each section [merge or delete] so that the user can check things out and continue or exit.
+<details>
+<summary> 2025-11-21 </summary>
 
-Unfortunately, a permanent fix for the sumo_dd python script won't be written in the near future due to busy schedule !
+<h4><b> OVERHAUL_25_11 </b></h4>
 
-maybe towards the spring/summer of 2026 !
+  - [__sumo_dd__](https://github.com/iskmz/sumo_dynamic_downloader/blob/main/__sumo_dd__.py)  AUTO section was fixed and adapted to changes.
+  - updated the file itself , without archiving the previous one.
+  - it was fixed just like that , pretty fast thanks to some early morning inspirations !
+  - now, grabbing the m3u8 urls is actually much faster than in the previous script, and works in a smooth and more logical way as the site loads and then video plays , like a cascade of streams, of get-response cascades. The old method of using thumbnail-ids for url string concatenation was mostly forsaken, except for rikishi videos + summary video at the end , because they still work fine on the old method. Check code difference for further details.
+  - V3A1MD protocol was inserted into the python code when needed , for the AUTO section.
+  - MAIN section was not changed, but it should be adapted to downloading two streams (audio & video), by the user, manually, if needed.  User can simply duplicate "zzz_toDownload.txt" and download each stream separately if desired.  OR better, simply use the V3A1MD batch file provided which does all this work smoothly.
+  - BOTD section works 100% as before , and no changes were made to it.
+  - Nothing of the OLD code was deleted. Instead, added a boolean switch at the top which changes the code flow in the required places, but if this switch is turned off then the old code runs, but it does not work at the moment, obviously, due to NHK player changes. However, it was kept in case changes revert back to the old ways, in the future.
+  
+
+
+</details>
+
 
 
 - - - - - - - - - - -
