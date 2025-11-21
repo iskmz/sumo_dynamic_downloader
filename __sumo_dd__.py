@@ -12,9 +12,9 @@ import sys
 import keyboard
 import threading
 import re # FIX on 2025-09-12 
+import requests # added for the 2025-11-21 MAJOR-FIX >>> a.k.a.:  overhaul_25-11 .. due to recent changes in NHK player & m3u8 urls !
 
 # ------------------------ constants ------------------------------------- #
-
 
 URL = "https://www3.nhk.or.jp/nhkworld/en/tv/sumo/"
 URL_prefix = "https://www3.nhk.or.jp"
@@ -25,6 +25,17 @@ m3u8_suffix = "_22.m3u8"  # 22=HD-quality(720p) # try 23 for higher # 19 or 21 f
 m3u8_prefix_alt = "https://vod-stream.nhk.jp"
 m3u8_suffix_alt = "/index_640x360_836k.m3u8"
 USE_FIREFOX = True # FIX on 2025-07-22  # if FALSE: default ChromeDriver is used with Selenium # 
+
+# ------------------------ constants-new (OVERHAUL_25_11) ---------------- #
+
+OVERHAUL_25_11 = True 	# a switch so that from now on, new method is used for retrieving m3u8 urls [get_m3u8_AV_url() , below]
+						# and for downloading, merging and deleting extras, according to V3A1MD protocol # check batch file with same name
+						# if FALSE: reverts back to previous method which does not work at the moment!
+
+AUDIO_STREAM = "a1.m3u8" # change to a2.m3u8 only if chosen v5.m3u8 for video (320x180, lowest quality) # all others use a1.m3u8 by default
+VIDEO_STREAM = "v3.m3u8" # v3=medium-quality,1280x720 # v2=higher-quality,1280x720 # v4=640x360,low-quality # v2>v3>v4>v5
+
+AV_SUFFIX_LEN = 7
 
 # ------------------- functions (common for all sections) ---------------- #
 
@@ -136,6 +147,36 @@ def sumo_gen_download_list():
 		rikishi_list.append(input(" >>> name of rikishi #" + str(i+1) + ": "))
 	down_list_gen(year,month,start_d,rikishi_list)
 
+
+# ------------------- new functions (OVERHAUL_25_11) --------------------- #
+
+def get_m3u8_AV_url(page_url):
+	driver = SELECT_WEBDRIVER() # FIX on 2025-07-22
+	driver.get(page_url)
+	try:
+		myElem = wdwait(driver, DELAY).until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
+	except TimeoutException:
+		print(end="")
+	soup = bs(driver.page_source,'html.parser')
+	vid_div = soup.find("div",{"id":"p-bout__vod"})
+	iframe = vid_div.find("iframe")
+	src_url= iframe.attrs.get("src")	# getting full-length src attribute value (url) of the iframe
+	# analyzing src_url to grab the required url for the request # .... master_nocc.m3u8 
+	start_i = src_url.index("&src=")+5
+	end_i = src_url.index(".m3u8")+5
+	req_url = src_url[start_i:end_i].strip().replace("%3A",":").replace("%2F","/")
+	# GET-request-response of ...master_nocc.m3u8 # req_url
+	response = requests.get(req_url)
+	str = response.text
+	# response analysis to grab V&A m3u8 urls to return as one string [V#A]
+	v_end_i = str.index(VIDEO_STREAM)+AV_SUFFIX_LEN
+	v_start_i = str.rfind("https",0,v_end_i)
+	a_end_i = str.index(AUDIO_STREAM)+AV_SUFFIX_LEN
+	a_start_i = str.rfind("https",0,a_end_i)
+	v_url = str[v_start_i:v_end_i].strip()
+	a_url = str[a_start_i:a_end_i].strip()
+	return v_url+"#"+a_url
+	
 
 # ------------------- functions (only for AUTO section) ------------------ #
 
@@ -314,40 +355,91 @@ def auto_main():
 		try:
 			if k[:2]=="00":
 				if k=="00__PREVIEW":
-					items_to_get[k]=get_m3u8_url(items_to_get[k])
+					if OVERHAUL_25_11:
+						items_to_get[k]=get_m3u8_AV_url(items_to_get[k]) # OVERHAUL_25_11: m3u8 urls for [Video#Audio] (in one string, with # as a separator) 
+					else:
+						items_to_get[k]=get_m3u8_url(items_to_get[k])
 				else:
-					items_to_get[k]=get_m3u8_url_alt(items_to_get[k])
+					items_to_get[k]=get_m3u8_url_alt(items_to_get[k]) # RIKISHI VIDZ: same for OVERHAUL_25_11 , no change ! 
 			else:
-				items_to_get[k]=get_m3u8_url(items_to_get[k])
-			print("\n + grabbed m3u8 URL for: ",k)
+				if OVERHAUL_25_11:
+					items_to_get[k]=get_m3u8_AV_url(items_to_get[k]) # OVERHAUL_25_11: m3u8 urls for [Video#Audio] (in one string, with # as a separator)
+				else:
+					items_to_get[k]=get_m3u8_url(items_to_get[k])
+			print("\n + grabbed m3u8 URL(s) for: ",k)
 		except Exception as e:
-			print("\n\t - UNKNOWN ERROR while grabbing .m3u8 url for: ",k,"\t -- SKIPPING THIS ONE !")
+			print("\n\t - UNKNOWN ERROR while grabbing .m3u8 url(s) for: ",k,"\t -- SKIPPING THIS ONE !")
 			items_to_get[k]="" # mark it for PART 4 !
 	print("\n\n > done grabbing required .m3u8 urls ... download will start in ...")
 	os.system("timeout /T 11")
 	#
-	# - - - - - PART 4: downloading and updating _urls.txt along the way
+	# - - - - - PART 4: downloading and updating _urls.txt along the way   
 	#
+	# if OVERHAUL_25_11 then applying the V3A1MD protocol in this section
+	#
+	AV_URL_TO_GET_FLAG = False # used for later, for merge step
 	os.system("cls")
 	print("\n\n > items to be downloaded:-\n")
 	for k,v in items_to_get.items():
 		if v=="":
 			continue
-		print(" + ",k,":  "+v)
+		if OVERHAUL_25_11 and "#" in v:
+			AV_URL_TO_GET_FLAG = True
+			v_lst = v.split("#")
+			print(" + ",k+"_v:  "+v_lst[0])
+			print(" + ",k+"_a:  "+v_lst[1])
+		else:
+			print(" + ",k+":  "+v)
 	print("\n\n"," - "*(11),"\n\n")
 	print("Downloading ...\n")
 	for k,v in items_to_get.items():
 		if v=="":
 			continue
-		print("\n + ",k,":")
-		if k.find("00")==0 or k.find("summary")==0:
+		if k=="00__PREVIEW" and OVERHAUL_25_11:
+			# preview should be downloaded using ffmpeg for the overhaul_25_11 ... two urls: V#A 
+			v_lst = v.split("#")
+			print("\n + ",k+"_v:")
+			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[0] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_v.mp4\"")
+			print("\n + ",k+"_a:")
+			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[1] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_a.mp4\"")
+		elif k.find("00")==0 or k.find("summary")==0: 
+			# no change in rikishi-vidz or summary vid for the OVERHAUL_25_11 
+			# same behavior 
+			print("\n + ",k+":")
 			os.system("yt-dlp \"" + v + "\" -o \"" + k + ".mp4\" --quiet --no-warnings --progress")
+		elif OVERHAUL_25_11:
+			# all other videos 
+			v_lst = v.split("#")
+			print("\n + ",k+"_v:")
+			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[0] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_v.mp4\"")
+			print("\n + ",k+"_a:")
+			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[1] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_a.mp4\"")
 		else:
+			print("\n + ",k+":")
 			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v + "\" -c copy -bsf:a aac_adtstoasc \"" + k + ".mp4\"")
 		if k.find("LIVE_01")==0 or k.find("LIVE_08")==0 or k.find("summary")==0:
 			os.system("echo:>> \"_urls.txt\"")
-		os.system("echo " + k + ":  " + v + ">> \"_urls.txt\"")
+		if OVERHAUL_25_11 and "#" in v:
+			v_lst = v.split("#")
+			os.system("echo " + k + "_v:  " + v_lst[0] + ">> \"_urls.txt\"")
+			os.system("echo " + k + "_a:  " + v_lst[1] + ">> \"_urls.txt\"")
+		else:
+			os.system("echo " + k + ":  " + v + ">> \"_urls.txt\"")
 	print("\n\n"," - "*(11),"\n\n")
+	
+	# MERGE + DELETE steps (V3A1MD protocol) , in case required
+	if AV_URL_TO_GET_FLAG:
+		print("Merging each V and A to a single mp4 file ...\n")
+		for k,v in items_to_get.items():
+			if "#" in v:
+				print("\n " + k + "_v.mp4  AND  " + k + "_a.mp4  TO " + k + ".mp4:")
+				os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + k + "_v.mp4\" -i \"" + k + "_a.mp4\" -c:v copy -c:a aac \"" + k + ".mp4\"")
+		print("\n\n DONE MERGING !!!")
+		print("\n\n"," - "*(11),"\n\n")
+		print("Cleaning up / deleting extra V and A files after merger ...\n")
+		os.system("del \"*_v.mp4\"")
+		os.system("del \"*_a.mp4\"")
+		print("\n\n"," - "*(11),"\n\n")
 	# - - - - - PART 5: finishing touches ... - - - - - #
 	updateDownloadTxtFile()
 	print("\n\n\t DONE !!!\n\n")
