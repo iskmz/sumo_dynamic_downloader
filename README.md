@@ -174,6 +174,14 @@ simply create a folder for current month's basho (for e.g. "2024_05") , and copy
 
 </details>
 
+<details>
+<summary> 2025-11-22 </summary>
+  
+  - minor changes and code re-structurings to make it more readable with less repetitions.
+  - i.e. cosmetic changes after recent OVERHAUL !
+  - also: changed default value for DOWNLOAD_LIST_FILENAME , from "zzz_toDownload.txt"  , to "....txt"
+
+</details>
 
 
 - - - - - - - - - - -
