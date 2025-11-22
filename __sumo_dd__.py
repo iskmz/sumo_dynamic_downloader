@@ -18,7 +18,7 @@ import requests # added for the 2025-11-21 MAJOR-FIX >>> a.k.a.:  overhaul_25-11
 
 URL = "https://www3.nhk.or.jp/nhkworld/en/tv/sumo/"
 URL_prefix = "https://www3.nhk.or.jp"
-DOWNLOAD_LIST_FILENAME = "zzz_toDownload.txt"
+DOWNLOAD_LIST_FILENAME = "....txt"
 DELAY = 11 # seconds
 m3u8_prefix = "https://eqj833muwr.eq.webcdn.stream.ne.jp/www50/eqj833muwr/jmc_pub/jmc_pd/"
 m3u8_suffix = "_22.m3u8"  # 22=HD-quality(720p) # try 23 for higher # 19 or 21 for lower
@@ -36,6 +36,7 @@ AUDIO_STREAM = "a1.m3u8" # change to a2.m3u8 only if chosen v5.m3u8 for video (3
 VIDEO_STREAM = "v3.m3u8" # v3=medium-quality,1280x720 # v2=higher-quality,1280x720 # v4=640x360,low-quality # v2>v3>v4>v5
 
 AV_SUFFIX_LEN = 7
+SEPARATOR = "#"
 
 # ------------------- functions (common for all sections) ---------------- #
 
@@ -175,13 +176,41 @@ def get_m3u8_AV_url(page_url):
 	a_start_i = str.rfind("https",0,a_end_i)
 	v_url = str[v_start_i:v_end_i].strip()
 	a_url = str[a_start_i:a_end_i].strip()
-	return v_url+"#"+a_url
-	
+	return v_url+SEPARATOR+a_url
 
+
+def VA_double_download(k,v_lst):
+	print("\n + ",k+"_v:")
+	os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[0] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_v.mp4\"")
+	print("\n + ",k+"_a:")
+	os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[1] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_a.mp4\"")
+
+
+def VA_double_echo_urls(k,v_lst):
+	os.system("echo " + k + "_v:  " + v_lst[0] + ">> \"_urls.txt\"")
+	os.system("echo " + k + "_a:  " + v_lst[1] + ">> \"_urls.txt\"")
+
+
+def merge_and_delete(items):
+	print("Merging each V and A to a single mp4 file ...\n")
+	for k,v in items:
+		if SEPARATOR in v:
+			print("\n " + k + "_v.mp4  AND  " + k + "_a.mp4  TO " + k + ".mp4:")
+			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + k + "_v.mp4\" -i \"" + k + "_a.mp4\" -c:v copy -c:a aac \"" + k + ".mp4\"")
+	print("\n\n DONE MERGING !!!")
+	print("\n\n"," - "*(11),"\n\n")
+	print("Cleaning up / deleting extra V and A files after merger ...\n")
+	os.system("del \"*_v.mp4\"")
+	os.system("del \"*_a.mp4\"")
+	print("\n\n"," - "*(11),"\n\n")
+	
+	
 # ------------------- functions (only for AUTO section) ------------------ #
 
 
-def get_m3u8_url(page_url):
+def get_m3u8_url(page_url,isOverHaul_25_11):
+	if isOverHaul_25_11: # OVERHAUL_25_11: m3u8 urls for [Video#Audio] (in one string, with # as a separator)
+		return get_m3u8_AV_url(page_url)
 	driver = SELECT_WEBDRIVER() # FIX on 2025-07-22
 	driver.get(page_url)
 	try:
@@ -355,17 +384,11 @@ def auto_main():
 		try:
 			if k[:2]=="00":
 				if k=="00__PREVIEW":
-					if OVERHAUL_25_11:
-						items_to_get[k]=get_m3u8_AV_url(items_to_get[k]) # OVERHAUL_25_11: m3u8 urls for [Video#Audio] (in one string, with # as a separator) 
-					else:
-						items_to_get[k]=get_m3u8_url(items_to_get[k])
+					items_to_get[k]=get_m3u8_url(items_to_get[k],OVERHAUL_25_11)
 				else:
 					items_to_get[k]=get_m3u8_url_alt(items_to_get[k]) # RIKISHI VIDZ: same for OVERHAUL_25_11 , no change ! 
-			else:
-				if OVERHAUL_25_11:
-					items_to_get[k]=get_m3u8_AV_url(items_to_get[k]) # OVERHAUL_25_11: m3u8 urls for [Video#Audio] (in one string, with # as a separator)
-				else:
-					items_to_get[k]=get_m3u8_url(items_to_get[k])
+			else:			
+				items_to_get[k]=get_m3u8_url(items_to_get[k],OVERHAUL_25_11)
 			print("\n + grabbed m3u8 URL(s) for: ",k)
 		except Exception as e:
 			print("\n\t - UNKNOWN ERROR while grabbing .m3u8 url(s) for: ",k,"\t -- SKIPPING THIS ONE !")
@@ -383,9 +406,9 @@ def auto_main():
 	for k,v in items_to_get.items():
 		if v=="":
 			continue
-		if OVERHAUL_25_11 and "#" in v:
+		if OVERHAUL_25_11 and SEPARATOR in v:
 			AV_URL_TO_GET_FLAG = True
-			v_lst = v.split("#")
+			v_lst = v.split(SEPARATOR)
 			print(" + ",k+"_v:  "+v_lst[0])
 			print(" + ",k+"_a:  "+v_lst[1])
 		else:
@@ -393,53 +416,30 @@ def auto_main():
 	print("\n\n"," - "*(11),"\n\n")
 	print("Downloading ...\n")
 	for k,v in items_to_get.items():
+		# FIRST: DOWNLOAD
 		if v=="":
 			continue
-		if k=="00__PREVIEW" and OVERHAUL_25_11:
-			# preview should be downloaded using ffmpeg for the overhaul_25_11 ... two urls: V#A 
-			v_lst = v.split("#")
-			print("\n + ",k+"_v:")
-			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[0] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_v.mp4\"")
-			print("\n + ",k+"_a:")
-			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[1] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_a.mp4\"")
-		elif k.find("00")==0 or k.find("summary")==0: 
-			# no change in rikishi-vidz or summary vid for the OVERHAUL_25_11 
-			# same behavior 
+		if k=="00__PREVIEW" and OVERHAUL_25_11: 		# preview should be downloaded using ffmpeg for the overhaul_25_11 ... two urls: V#A 
+			VA_double_download(k,v.split(SEPARATOR))
+		elif k.find("00")==0 or k.find("summary")==0: 	# no change in rikishi-vidz or summary vid for the OVERHAUL_25_11 # same behavior 
 			print("\n + ",k+":")
 			os.system("yt-dlp \"" + v + "\" -o \"" + k + ".mp4\" --quiet --no-warnings --progress")
-		elif OVERHAUL_25_11:
-			# all other videos 
-			v_lst = v.split("#")
-			print("\n + ",k+"_v:")
-			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[0] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_v.mp4\"")
-			print("\n + ",k+"_a:")
-			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v_lst[1] + "\" -c copy -bsf:a aac_adtstoasc \"" + k + "_a.mp4\"")
+		elif OVERHAUL_25_11: # all other videos 
+			VA_double_download(k,v.split(SEPARATOR))
 		else:
 			print("\n + ",k+":")
 			os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + v + "\" -c copy -bsf:a aac_adtstoasc \"" + k + ".mp4\"")
+		# SECOND: UPDATE _urls.txt
 		if k.find("LIVE_01")==0 or k.find("LIVE_08")==0 or k.find("summary")==0:
 			os.system("echo:>> \"_urls.txt\"")
-		if OVERHAUL_25_11 and "#" in v:
-			v_lst = v.split("#")
-			os.system("echo " + k + "_v:  " + v_lst[0] + ">> \"_urls.txt\"")
-			os.system("echo " + k + "_a:  " + v_lst[1] + ">> \"_urls.txt\"")
+		if OVERHAUL_25_11 and SEPARATOR in v:
+			VA_double_echo_urls(k,v.split(SEPARATOR))
 		else:
 			os.system("echo " + k + ":  " + v + ">> \"_urls.txt\"")
 	print("\n\n"," - "*(11),"\n\n")
-	
-	# MERGE + DELETE steps (V3A1MD protocol) , in case required
+	# MERGE + DELETE steps (V3A1MD protocol) , in case required [at least one AV double url: flagged]
 	if AV_URL_TO_GET_FLAG:
-		print("Merging each V and A to a single mp4 file ...\n")
-		for k,v in items_to_get.items():
-			if "#" in v:
-				print("\n " + k + "_v.mp4  AND  " + k + "_a.mp4  TO " + k + ".mp4:")
-				os.system("ffmpeg -v quiet -hide_banner -stats -i \"" + k + "_v.mp4\" -i \"" + k + "_a.mp4\" -c:v copy -c:a aac \"" + k + ".mp4\"")
-		print("\n\n DONE MERGING !!!")
-		print("\n\n"," - "*(11),"\n\n")
-		print("Cleaning up / deleting extra V and A files after merger ...\n")
-		os.system("del \"*_v.mp4\"")
-		os.system("del \"*_a.mp4\"")
-		print("\n\n"," - "*(11),"\n\n")
+		merge_and_delete(items_to_get.items())
 	# - - - - - PART 5: finishing touches ... - - - - - #
 	updateDownloadTxtFile()
 	print("\n\n\t DONE !!!\n\n")
